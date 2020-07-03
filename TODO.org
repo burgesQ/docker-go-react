@@ -1,0 +1,21 @@
+#+TITLE: go-react's todos
+#+AUTHOR: Quentin Burgess (quentin.burgess@frafos.com)
+#+DESCRIPTION: Quick summary of dev task for the go-react stack
+#+TODO: IDEA TODO WIP REVIEW | UNASIGNED CANCELED DONE
+
+
+* WIP release 1 [2/3] [66%]
+** DONE api [100%]
+   CLOSED: [2020-07-03 Fri 15:31]
+   - [X] swag
+   - [X] version
+   - [X] Makefile
+   - [X] vendor
+   - [X] Dockerfile
+** WIP front [75%]
+   - [X] reach api
+   - [ ] cfg
+   - [X] Makefile
+   - [X] Dockerfile
+** DONE nginx
+   CLOSED: [2020-07-03 Fri 15:31]
