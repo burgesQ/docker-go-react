@@ -167,7 +167,7 @@ docker-rm: docker-stop
 ## docker-build-dev: Build a docker container until the dev step
 docker-build-dev:
 	docker build \
-		-t $(DEV_IMG) \
+		-t api-dev:latest \
 		--target dev \
 		--rm \
 		.
@@ -176,11 +176,11 @@ docker-build-dev:
 ## docker-run-dev: Run the docker container until the dev step
 docker-run-dev: docker-build-dev
 	docker run \
-		--name=$(DEV_IMG) \
+		--name=api-dev\
 		--rm \
 		--network=host \
-		-v `pwd`:/app
-		$(DEV_IMG)
+		-v `pwd`:/app \
+		api-dev:latest
 
 .PHONY:		help
 ## help: Prints this help message

@@ -1,0 +1,60 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an example API GRPC.",
+        "title": "API",
+        "termsOfService": "https://www.youtube.com/watch?v=DLzxrzFCyOs",
+        "contact": {
+            "name": "Quentin Burgess",
+            "url": "http://github.com/burgesQ",
+            "email": "quentin@frafos.com"
+        },
+        "license": {
+            "name": "GFO",
+            "url": "https://www.youtube.com/watch?v=DLzxrzFCyOs"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:4242",
+    "basePath": "/api",
+    "paths": {
+        "/v1/version": {
+            "get": {
+                "description": "Handler to fetch the api version",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Utils"
+                ],
+                "summary": "Fetch the API version",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "return a pretty JSON",
+                        "name": "pretty",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/webfmwk.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "webfmwk.Response": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
