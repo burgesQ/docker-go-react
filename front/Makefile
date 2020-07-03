@@ -58,6 +58,7 @@ docker\:run\:dev:
 		-it \
 		--network=host \
 		-v `pwd`:/app \
+		-e CHOKIDAR_USEPOLLING=true \
 		front-dev:latest
 
 .PHONY:		help
