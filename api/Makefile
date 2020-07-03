@@ -24,6 +24,11 @@ RM					= rm -f
 VENDOR = vendor
 VENDOR_BALL = $(VENDOR).tgz
 
+# swagger doc file
+DOCS				= $(SRC)/docs/swagger.json
+DOC_FILE		=	./main.go
+SWAGGO			= swaggo-cli
+
 # go lint
 LINT				= golangci-lint run
 
@@ -32,7 +37,7 @@ RELEASE   = dev
 
 ## all: Build the go API
 all:		$(NAME)
-$(NAME):
+$(NAME): $(DOCS)
 	@echo " - Building $(NAME) ..."
 	$(BUILD)
 	@echo " - Building $(NAME) : done"
@@ -47,6 +52,31 @@ clean:
 .PHONY: re
 ## re: Clean then build the api
 re:			clean all
+
+## doc: Generate the swagger doc
+doc:			$(DOCS)
+$(DOCS):
+	@echo " - Generating swagger doc ..."
+	@swag init --parseDependency --generalInfo $(DOC_FILE)
+	@echo " - Generating swagger doc : done"
+
+.PHONY:		cdoc
+## cdoc: clean the doc files
+cdoc:
+	@echo " - Removing doc files ..."
+	@$(RM) $(DOCS)
+	@echo " - Removing doc files : done"
+
+.PHONY:		xdoc
+## xdoc: Check the generated swagger file
+xdoc: doc
+	@echo " -- Checking swagger doc ..."
+	@ docker run -it --rm -v `pwd`:/data quay.io/goswagger/swagger validate /data/$(DOCS)
+	@echo " -- Checking swagger doc : done"
+
+.PHONY:		rdoc
+## rdoc: clean then re-build the docs
+rdoc:		cdoc doc
 
 ## vendor: Build the vendor
 $(VENDOR):
@@ -96,7 +126,7 @@ build:
 
 .PHONY: fclean
 ## fclean: Force clean
-fclean: cvendor clean
+fclean: cvendor cdoc clean
 
 # docker
 

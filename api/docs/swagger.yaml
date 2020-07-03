@@ -1,0 +1,40 @@
+basePath: /api
+definitions:
+  webfmwk.Response:
+    properties:
+      content:
+        type: string
+    type: object
+host: localhost:4242
+info:
+  contact:
+    email: quentin@frafos.com
+    name: Quentin Burgess
+    url: http://github.com/burgesQ
+  description: This is an example API GRPC.
+  license:
+    name: GFO
+    url: https://www.youtube.com/watch?v=DLzxrzFCyOs
+  termsOfService: https://www.youtube.com/watch?v=DLzxrzFCyOs
+  title: API
+  version: "1.0"
+paths:
+  /v1/version:
+    get:
+      description: Handler to fetch the api version
+      parameters:
+      - description: return a pretty JSON
+        in: query
+        name: pretty
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/webfmwk.Response'
+      summary: Fetch the API version
+      tags:
+      - Utils
+swagger: "2.0"

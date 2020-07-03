@@ -1,7 +1,8 @@
 FROM golang:1.13 as dev
 
 # install extra packages
-RUN GO111MODULE=on go get github.com/cortesi/modd/cmd/modd
+RUN GO111MODULE=on go get -u github.com/cortesi/modd/cmd/modd && \
+  GO111MODULE=on go get -u github.com/swaggo/swag/cmd/swag
 
 WORKDIR /app
 
@@ -29,7 +30,6 @@ FROM scratch as prod
 ARG API_PORT=4242
 
 COPY --from=build /app/api /api
-COPY --from=build /app/config /config/
 
 EXPOSE $API_PORT
 
