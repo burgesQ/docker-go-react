@@ -42,6 +42,7 @@ func main() {
 		webfmwk.WithLogger(log.GetLogger()),
 		webfmwk.SetPrefix("/api/v1"),
 		webfmwk.CheckIsUp(),
+		webfmwk.WithCORS(),
 		webfmwk.WithDocHandler(httpSwagger.WrapHandler),
 		webfmwk.WithHandlers(handler.Logging))
 
