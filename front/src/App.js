@@ -17,7 +17,7 @@ export default class App extends Component {
 
     this.state = {
       version: 'undef',
-      apiHost: process.env.API_HOST || 'http://127.0.0.1:4242',
+      apiHost: process.env.API_HOST || '',
       isLoading: false,
     };
   }

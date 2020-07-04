@@ -14,14 +14,14 @@ $(NAME): docker-build
 gen-certs: $(KEY)
 $(CERT): $(KEY)
 $(KEY):
-	@ openssl req -new -newkey rsa:4096 -sha256 -days 365 -nodes \
+	@ openssl req -x509 -newkey rsa:4096 -sha256 -days 365 \
 	-subj "/C=DE/ST=Berlin/L=Berlin/O=Global Security/OU=IT Department/CN=example.com" \
-	-out $(CERT) -keyout $(KEY)
+	-nodes -out $(CERT) -keyout $(KEY)
 
 .PHONY:	clean
 ## clean: Remove the generated certs
 clean:
-	@ rm -r $(CERT) $(KEY)
+	@ rm -f $(CERT) $(KEY)
 
 .PHONY:	docker-build
 ## docker-build: Build the release ready docker image

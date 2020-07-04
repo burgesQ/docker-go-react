@@ -17,7 +17,11 @@
    - [ ] cfg
    - [X] Makefile
    - [X] Dockerfile
+   - [ ] fix linter issue
+   - [ ] extra pck json target
 ** DONE nginx
    CLOSED: [2020-07-03 Fri 15:31]
 ** doc
    - [ ] some cute schemas
+   - [ ] makefile help
+   - [ ] README

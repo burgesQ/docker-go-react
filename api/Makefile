@@ -33,8 +33,9 @@ SWAGGO			= swaggo-cli
 LINT				= golangci-lint run
 
 # docker
-CONTAINER		= api
-RELEASE		  = dev
+CONTAINER		= $(NAME)
+RELEASE		  ?= dev
+D_R_ARG			?=-v `pwd`:/app --net=host
 
 # go lint
 LINT				= golangci-lint run
@@ -135,24 +136,38 @@ fclean: cvendor cdoc clean
 # docker
 
 .PHONY: docker-build
-## docker-build: Build the prod ready docker image
+## docker-build: Build a docker image
 docker-build: fclean vendor
 	@echo "Building the docker image for $(NAME) ..."
 	docker build \
 		-e VERSION=$(VERSION) \
 		-t $(NAME):$(RELEASE) \
+		--target $(RELEASE) \
 		--rm \
 		.
 
+.PHONY: docker-build-prod
+## docker-build-prod: Build a production docker image
+docker-build-prod:
+	$(MAKE) docker-build -e RELEASE=prod
+
+
+
 .PHONY: docker-run
-## docker-run: Start the previously builded image
+## docker-run: Start the docker image
 docker-run: docker-rm
 	@echo "Running $(NAME):$(RELEASE) in docker container $(CONTAINER) ..."
 	@docker run \
-		-p 4242:4242 \
+		-it \
 		--rm \
 		--name $(CONTAINER) \
+		$(D_R_ARG) \
 		$(NAME):$(RELEASE)
+
+.PHONY: docker-run-prod
+## docker-run-prod: Run the production docker container
+docker-run-prod: docker-build-prod
+	$(MAKE) docker-run -e D_R_ARG="-p 4242:4242" -e RELEASE=prod
 
 .PHONY: docker-stop
 ## docker-stop: Stop the runned docker container
@@ -165,25 +180,6 @@ docker-stop:
 docker-rm: docker-stop
 	@echo "Removing $(CONTAINER) ..."
 	@docker rm $(CONTAINER) ; true
-
-.PHONY: docker-build-dev
-## docker-build-dev: Build a docker container until the dev step
-docker-build-dev:
-	docker build \
-		-t api-dev:latest \
-		--target dev \
-		--rm \
-		.
-
-.PHONY: docker-run-dev
-## docker-run-dev: Run the docker container until the dev step
-docker-run-dev: docker-build-dev
-	docker run \
-		--name=api-dev\
-		--rm \
-		--network=host \
-		-v `pwd`:/app \
-		api-dev:latest
 
 .PHONY:		tidy
 ## tidy: Tidy up the deps
