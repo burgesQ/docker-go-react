@@ -2,17 +2,18 @@ NAME				= api
 SRC					= ./
 
 GIT_COMMIT	:= $(shell git rev-parse --short HEAD 2> /dev/null || echo "dev")
+VERSION			?= $(shell git describe --tags --abbrev || echo "dev")
 
 # go compile
 GO_CC				= go
-VERSION			= -ldflags "-X 'main.version=1.0-$(GIT_COMMIT)'"
+F_VERSION		= -ldflags "-X 'main.version=$(VERSION)-$(GIT_COMMIT)'"
 LD_FLAGS		=	#
 GC_FLAGS		= # -
 M_VENDOR		= # -mod=vendor
 DEV_ENV			= # CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 BUILD				= $(DEV_ENV) $(GO_CC) build     \
 									-o $(NAME)  \
-									$(VERSION)  \
+									$(F_VERSION)  \
 									$(LD_FLAGS) \
 									$(M_VENDOR) \
 									$(GC_FLAGS)	$(SRC)
@@ -138,6 +139,7 @@ fclean: cvendor cdoc clean
 docker-build: fclean vendor
 	@echo "Building the docker image for $(NAME) ..."
 	docker build \
+		-e VERSION=$(VERSION) \
 		-t $(NAME):$(RELEASE) \
 		--rm \
 		.

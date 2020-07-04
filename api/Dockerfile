@@ -19,6 +19,8 @@ COPY --from=dev /app /app
 # define work directory
 WORKDIR /app
 
+ENV VERSION=
+
 ARG MAKE_CMD='build'
 ARG MAKE_ENV='-e M_VENDOR=-mod=vendor'
 
