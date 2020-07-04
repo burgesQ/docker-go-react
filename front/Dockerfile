@@ -5,15 +5,14 @@ WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
+
 # set env var
 ENV NODE_ENV=dev
 ENV API_HOST=''
 
 # install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts -g --silent
+COPY package*.json ./
+RUN npm install --silent && npm install react-scripts -g --silent
 
 # add app
 COPY . ./
@@ -22,8 +21,10 @@ CMD npm start
 
 FROM node:10 as build
 
+ENV NODE_ENV=production
+
 WORKDIR /app
-COPY ./package.json ./package.json
+COPY ./package*.json ./
 RUN npm install
 COPY . .
 
