@@ -1,0 +1,40 @@
+version: "3.4"
+
+services:
+
+  # todo: networking
+
+  api:
+    build:
+      context: api
+      target: prod
+    container_name: api
+    restart: always
+    environment:
+      API_PORT: 4242
+
+  front:
+    build:
+      context: front
+      target: prod
+    container_name: front
+    restart: always
+    environment:
+      API_HOST: ''
+
+  # nginx is used for ssl termination
+  nginx:
+    restart: always
+    build:
+      context: nginx
+      target: prod
+    container_name: nginx
+    # volumes:
+    #  - ../certs-data:/data/letsencrypt
+    #  - /etc/letsencrypt/:/etc/letsencrypt/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+      - front

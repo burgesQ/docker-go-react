@@ -2,39 +2,44 @@ version: "3.4"
 
 services:
 
-  # todo: networking
-
   api:
     build:
       context: api
-      target: prod
-    container_name: api
-    restart: always
+      target: dev
+    container_name: api-dev
     environment:
       API_PORT: 4242
+    ports:
+      - 4242:4242
+    volumes:
+      - "./api:/app"
 
   front:
     build:
       context: front
-      target: prod
-    container_name: front
-    restart: always
+      target: dev
+    container_name: front-dev
     environment:
-      API_HOST: ''
+      - API_HOST=''
+      # enable
+      # https://stackoverflow.com/questions/22111060/what-is-the-difference-between-expose-and-publish-in-docker
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - "./front:/app"
+    ports:
+      - 3000:3000
+    # fix docker exiting on react hot reload
+    # https://stackoverflow.com/questions/60790440/docker-container-exiting-immediately-after-starting-when-using-npm-init-react-ap
+    stdin_open: true
 
-  # nginx is used for ssl termination
   nginx:
-    restart: always
     build:
       context: nginx
-      target: prod
-    container_name: nginx
-    # volumes:
-    #  - ../certs-data:/data/letsencrypt
-    #  - /etc/letsencrypt/:/etc/letsencrypt/
+      target: dev
+    container_name: nginx-dev
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     depends_on:
       - api
       - front
