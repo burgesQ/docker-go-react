@@ -1,6 +1,5 @@
-NAME					= api
-
-SRC				= ./
+NAME				= api
+SRC					= ./
 
 GIT_COMMIT	:= $(shell git rev-parse --short HEAD 2> /dev/null || echo "dev")
 
@@ -11,7 +10,6 @@ LD_FLAGS		=	#
 GC_FLAGS		= # -
 M_VENDOR		= # -mod=vendor
 DEV_ENV			= # CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-
 BUILD				= $(DEV_ENV) $(GO_CC) build     \
 									-o $(NAME)  \
 									$(VERSION)  \
@@ -21,7 +19,8 @@ BUILD				= $(DEV_ENV) $(GO_CC) build     \
 
 RM					= rm -f
 
-VENDOR = vendor
+# go vendor
+VENDOR			= vendor
 VENDOR_BALL = $(VENDOR).tgz
 
 # swagger doc file
@@ -32,8 +31,12 @@ SWAGGO			= swaggo-cli
 # go lint
 LINT				= golangci-lint run
 
-CONTAINER = api
-RELEASE   = dev
+# docker
+CONTAINER		= api
+RELEASE		  = dev
+
+# go lint
+LINT				= golangci-lint run
 
 ## all: Build the go API
 all:		$(NAME)
@@ -130,8 +133,6 @@ fclean: cvendor cdoc clean
 
 # docker
 
-
-
 .PHONY: docker-build
 ## docker-build: Build the prod ready docker image
 docker-build: fclean vendor
@@ -181,6 +182,14 @@ docker-run-dev: docker-build-dev
 		--network=host \
 		-v `pwd`:/app \
 		api-dev:latest
+
+.PHONY:		tidy
+## tidy: Tidy up the deps
+tidy: ; @ $(GO_CC) mod tidy
+
+.PHONY:		lint
+## lint: run the go linter
+lint: ; @cd $(SRC) && $(LINT)
 
 .PHONY:		help
 ## help: Prints this help message
