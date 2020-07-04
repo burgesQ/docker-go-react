@@ -4,7 +4,7 @@ RM				= rm -f
 
 CONTAINER = $(NAME)
 RELEASE   ?= dev
-D_R_ARG		?=-v `pwd`:/app -e CHOKIDAR_USEPOLLING=true --user `id -u`:`id -g`
+D_R_ARG		?=-v node_modules-vol:/app/node_modules -v `pwd`:/app -e CHOKIDAR_USEPOLLING=true --user `id -u`:`id -g`
 
 ## all: Build the docker
 all:		$(NAME)
