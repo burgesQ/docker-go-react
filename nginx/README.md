@@ -23,4 +23,21 @@ Usage:
   help               Prints this help message
 ```
 
+## stuffs
 
+### generate ssl key+cert one line
+
+```bash
+$ openssl req -new -newkey rsa:4096 -sha256 -days 365 -nodes \
+	-subj "/C=DE/ST=Berlin/L=Berlin/O=Global Security/OU=IT Department/CN=example.com" \
+	-out $(CERT) -keyout $(KEY)`
+```
+
+### docker multi stage 
+
+[Have a look at the official doc](https://docs.docker.com/develop/develop-images/multistage-build/)
+
+### docker container name as hostnam
+
+Once again, [have a look at the official doc](https://docs.docker.com/compose/networking/) - 
+"Each container for a service (...) a hostname identical to the container name."
